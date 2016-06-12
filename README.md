@@ -76,6 +76,7 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
                progress:(HttpUploadProgressBlock)progress;
 ```
 4.AFN 下载文件
+------------
 ```objc
 /**
  *  AFN 下载文件
