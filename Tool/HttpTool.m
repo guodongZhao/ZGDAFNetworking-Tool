@@ -10,7 +10,7 @@
 #import "AFNetworking.h"
 
 #warning 请设置服务器地址
-static NSString *const kBaseURLString = @"http://iappfree.candou.com:8080";
+static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.candou.com':(端口号)'例如：8080'";
 
 @interface AFHttpClient : AFHTTPSessionManager
 
