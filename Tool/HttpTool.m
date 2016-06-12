@@ -2,9 +2,9 @@
 //  HttpTool.m
 //
 //  https://github.com/guodongZhao/ZGDAFNetworking-Tool.git
-//  Created by guodongzhao on 16/3/5.
-//  Copyright © 2016年 https://github.com/guodongZhao. All rights reserved.
-//
+//  Created by zhaoguodong on 16/3/5.
+//  Copyright © 2016年 bjqttd All rights reserved.
+//  https://github.com/guodongZhao.
 
 #import "HttpTool.h"
 #import "AFNetworking.h"
