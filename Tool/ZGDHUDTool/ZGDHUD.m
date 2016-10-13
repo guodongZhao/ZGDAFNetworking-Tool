@@ -106,7 +106,7 @@
     UIImageView *loadingProgressImageView = [UIImageView imageViewWithGIFFile:file frame:CGRectMake(self.bounds.size.width/2 - 32, self.bounds.size.height/2 - 64, 64, 64)];
     // 添加视图
     [self addSubview:loadingProgressImageView];
-    self.message_Label.text = [NSString stringWithFormat:@"正在加载中...%.2f %%", proress];
+    self.message_Label.text = [NSString stringWithFormat:@"正在加载中...%.2f %%", proress * 100];
     
     [HUDView addSubview:self];
 }
