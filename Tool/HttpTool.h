@@ -92,10 +92,21 @@ typedef void (^HttpDowloadProgressBlock) (CGFloat progress);
                 failure:(HttpFailureBlock)failure
                progress:(HttpDowloadProgressBlock)progress;
 
-
-//判断是否注册
-//+ (BOOL)judgeIsRegisterNsstring:(NSString *)str;
-
+/**
+ *  AFN 上传视频+参数集
+ *
+ *  @param path URL地址
+ *
+ *  @param params 请求参数 (NSDictionary)
+ *
+ *  @param video 上传的视频文件数组 (NSArray)
+ *
+ *  @param success 文件下载成功回调（下载文件保存路径）
+ *
+ *  @param failure 请求失败值 (NSError)
+ *
+ *  @param progress 文件下载进度（浮点型）
+ */
 + (void)postWithImgPath:(NSString *)path
                  params:(NSDictionary *)params
                   video:(NSArray *)video
@@ -103,6 +114,10 @@ typedef void (^HttpDowloadProgressBlock) (CGFloat progress);
                 failure:(HttpFailureBlock)failure
                progress:(HttpUploadProgressBlock)progress;
 
-#pragma mark -隐藏多余分割线
+/**
+ *  UITableView 隐藏多余分割线
+ *
+ *  @param tableView 需要隐藏分割线的tableView
+ */
 +(void)setExtraCellLineHidden: (UITableView *)tableView;
 @end
