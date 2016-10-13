@@ -27,6 +27,7 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
  */
 + (void)getWithPath:(NSString *)path
              params:(NSDictionary *)params
+            hudView:(UIView *)hudView
             success:(HttpSuccessBlock)success
             failure:(HttpFailureBlock)failure;
 ```
@@ -46,9 +47,10 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
  */
 + (void)postWithPath:(NSString *)path
               params:(NSDictionary *)params
+             hudView:(UIView *)hudView
+             hudText:(NSString *)hudText
              success:(HttpSuccessBlock)success
              failure:(HttpFailureBlock)failure;
-
 ```
 3.AFN POST上传图片
 ----------------
