@@ -2,7 +2,7 @@
 ======================
 ## 基于最新AFN3.1.0二次封装 （Based on the latest AFN3.1.0 secondary packaging）
 -----------------------------------------------------------------------------
-`持续更新中`
+`持续更新中`    `目前版本1.2`
 ### 使用时请设置服务器地址（域名）
 Warning :!!   位于HttpTool.m文件中
 ----------
@@ -96,4 +96,39 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
                 failure:(HttpFailureBlock)failure
                progress:(HttpDowloadProgressBlock)progress;
 ```
+5.AFN 上传视频+参数集
+------------------
+```objc
+/**
+ *  AFN 上传视频+参数集
+ *
+ *  @param path URL地址
+ *
+ *  @param params 请求参数 (NSDictionary)
+ *
+ *  @param video 上传的视频文件数组 (NSArray)
+ *
+ *  @param success 文件下载成功回调（下载文件保存路径）
+ *
+ *  @param failure 请求失败值 (NSError)
+ *
+ *  @param progress 文件下载进度（浮点型）
+ */
++ (void)postWithImgPath:(NSString *)path
+                 params:(NSDictionary *)params
+                  video:(NSArray *)video
+                success:(HttpSuccessBlock)success
+                failure:(HttpFailureBlock)failure
+               progress:(HttpUploadProgressBlock)progress;
+```
 
+6. UITableView 隐藏多余的分割线（新特性）
+----------------------------------
+```objc
+/**
+ *  UITableView 隐藏多余分割线
+ *
+ *  @param tableView 需要隐藏分割线的tableView
+ */
++(void)setExtraCellLineHidden: (UITableView *)tableView;
+```
