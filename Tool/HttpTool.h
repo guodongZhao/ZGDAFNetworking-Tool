@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-typedef void (^HttpSuccessBlock) (id JSON);
+typedef void (^HttpSuccessBlock) (NSDictionary * JSONDic);
 typedef void (^HttpFailureBlock) (NSError *error);
 typedef void (^HttpUploadProgressBlock) (CGFloat progress);
 typedef void (^HttpDowloadBlock) (NSString *filePath);
@@ -31,6 +31,7 @@ typedef void (^HttpDowloadProgressBlock) (CGFloat progress);
  */
 + (void)getWithPath:(NSString *)path
              params:(NSDictionary *)params
+            hudView:(UIView *)hudView
             success:(HttpSuccessBlock)success
             failure:(HttpFailureBlock)failure;
 
@@ -47,6 +48,8 @@ typedef void (^HttpDowloadProgressBlock) (CGFloat progress);
  */
 + (void)postWithPath:(NSString *)path
               params:(NSDictionary *)params
+             hudView:(UIView *)hudView
+             hudText:(NSString *)hudText
              success:(HttpSuccessBlock)success
              failure:(HttpFailureBlock)failure;
 
@@ -90,5 +93,16 @@ typedef void (^HttpDowloadProgressBlock) (CGFloat progress);
                progress:(HttpDowloadProgressBlock)progress;
 
 
+//判断是否注册
+//+ (BOOL)judgeIsRegisterNsstring:(NSString *)str;
 
++ (void)postWithImgPath:(NSString *)path
+                 params:(NSDictionary *)params
+                  video:(NSArray *)video
+                success:(HttpSuccessBlock)success
+                failure:(HttpFailureBlock)failure
+               progress:(HttpUploadProgressBlock)progress;
+
+#pragma mark -隐藏多余分割线
++(void)setExtraCellLineHidden: (UITableView *)tableView;
 @end
