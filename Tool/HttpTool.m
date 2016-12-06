@@ -11,8 +11,16 @@
 
 #import "ZGDHUD.h"
 
-#warning 请设置服务器地址
-static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.candou.com':(端口号)'例如：8080'";
+#warning 请设置服务器基地址
+static NSString *const kBaseURLString = @"服务器基地址 例如:https://baidu.com/api/";
+static inline NSData * image2Data(UIImage *img,CGFloat num) {
+    NSData *d = UIImageJPEGRepresentation(img,num);
+    if (d == nil) {
+        d = UIImageJPEGRepresentation(img, num);
+    }
+    return d;
+}
+
 
 @interface AFHttpClient : AFHTTPSessionManager
 
@@ -49,11 +57,11 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
              hudText:(NSString *)hudText
              success:(HttpSuccessBlock)success
              failure:(HttpFailureBlock)failure{
-
+    
     // 初始化HUD
     ZGDHUD *HUDView = [[ZGDHUD alloc] init];
     [HUDView showLoadingHUDAtView:hudView];
-
+    
     // 获取完整的URL
     NSString *urlString = [kBaseURLString stringByAppendingPathComponent:path];
     // 实例化请求
@@ -63,14 +71,14 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
     
     // 开始获取数据
     [[[AFHttpClient sharedClient] dataTaskWithRequest:request uploadProgress:^(NSProgress * _Nonnull uploadProgress) {
-//        uploadProgressTool(uploadProgress.fractionCompleted);
-//        NSLog(@"开始上传");
- 
+        //        uploadProgressTool(uploadProgress.fractionCompleted);
+        //        NSLog(@"开始上传");
+        
         // 上传
     } downloadProgress:^(NSProgress * _Nonnull downloadProgress) {
-//        downloadProgressTool(downloadProgress.fractionCompleted);
-//        NSLog(@"开始下载");
-//            [HUDView showLoadingHUDAtView:hudView];
+        //        downloadProgressTool(downloadProgress.fractionCompleted);
+        //        NSLog(@"开始下载");
+        //            [HUDView showLoadingHUDAtView:hudView];
         // 下载
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         if (error) {
@@ -82,12 +90,12 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
             
             // 重新加载
             [failHUD setFailBlock:^{
-                 __weak typeof(self) weakSelf= self;
+                __weak typeof(self) weakSelf= self;
                 [weakSelf postWithPath:path params:params hudView:hudView hudText:nil success:success failure:failure];
                 
-//                [failHUD hide];
+                //                [failHUD hide];
             }];
-//            NSLog(@"网络连接失败失败 错误码%zd", error.code);
+            //            NSLog(@"网络连接失败失败 错误码%zd", error.code);
             [NSThread sleepForTimeInterval:2.0];
             
         }
@@ -95,7 +103,7 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
             success(responseObject);
             [NSThread sleepForTimeInterval:0.25];
             [HUDView hide];
-//            NSLog(@"网络连接成功");
+            //            NSLog(@"网络连接成功");
             
         }
     }] resume];
@@ -142,7 +150,7 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
         }
     }] resume];
     
-
+    
 }
 
 #pragma mark - POST上传图片
@@ -162,11 +170,11 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:urlString parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         for (NSUInteger idx = 0; idx < images.count; idx ++) {
             // 获取图片名称
-//            NSDate *date = [NSDate new];
-//            NSDateFormatter *df = [[NSDateFormatter alloc]init];
-//            [df setDateFormat:@"yyyyMMddHHmmss"];
-//            NSString *time = [df stringFromDate:date];
-//            NSString *imageName = [NSString stringWithFormat:@"%@%zi.jpg", time, idx + 1];
+            //            NSDate *date = [NSDate new];
+            //            NSDateFormatter *df = [[NSDateFormatter alloc]init];
+            //            [df setDateFormat:@"yyyyMMddHHmmss"];
+            //            NSString *time = [df stringFromDate:date];
+            //            NSString *imageName = [NSString stringWithFormat:@"%@%zi.jpg", time, idx + 1];
             /*userfile 根据对应请求图片来修改*/
             NSString *name = [NSString stringWithFormat:@"userfile%02zi", idx];
             NSData *data = image2Data(images[idx], 0.5);
@@ -209,7 +217,7 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
     
     // 实例化请求
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-
+    
     // 开始下载
     [[[AFHttpClient sharedClient] downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         
@@ -217,7 +225,7 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
         dispatch_async(dispatch_get_main_queue(), ^{
             progress(downloadProgress.fractionCompleted);
         });
-
+        
     } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
         // 设置文件的保存地址
         NSURL *cacheUrl = [[NSFileManager defaultManager] URLForDirectory:NSCachesDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
@@ -234,52 +242,67 @@ static NSString *const kBaseURLString = @"http://(域名)例如：'iappfree.cand
         }
     }] resume];
 }
-
-
 #pragma mark - POST上传视频
-+ (void)postWithImgPath:(NSString *)path
-                 params:(NSDictionary *)params
-                 video:(NSArray *)video
-                success:(HttpSuccessBlock)success
-                failure:(HttpFailureBlock)failure
-               progress:(HttpUploadProgressBlock)progress
-
++(void)postWithVideoPath:(NSString *)path
+                  params:(NSDictionary *)params
+                   video:(NSData *)video
+              videoImage:(NSData *)videoImage
+    videoImageParamsName:(NSString *)VideoParamsImageName
+         videoParamsName:(NSString *)VideoParamsName
+                 hudView:(UIView *)hudView
+                 success:(HttpSuccessBlock)success
+                 failure:(HttpFailureBlock)failure
+                progress:(HttpUploadProgressBlock)progress
 {
     // 获取完整的URL
     NSString *urlString = [kBaseURLString stringByAppendingPathComponent:path];
     // 实例化请求
     NSError *error = nil;
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:urlString parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        for (NSUInteger idx = 0; idx < video.count; idx ++) {
-            if (idx == 1) {
-                [formData appendPartWithFileData:video[idx] name:@"info_video" fileName:@"info_video.MP4" mimeType:@"video/mp4"];
-            }else{
-                /*userfile 根据对应请求图片来修改*/
-                NSData *data = image2Data(video[idx], 0.5);
-                [formData appendPartWithFileData:data name:@"info_video_poster" fileName:@"headPicture.png" mimeType:@"image/jpg"];
-            }
-            }
+        
+        if (video != nil) {
+            [formData appendPartWithFileData:video name:VideoParamsName fileName:[NSString stringWithFormat:@"%@.mp4", VideoParamsName] mimeType:[NSString stringWithFormat:@"%@/mp4", VideoParamsName]];
+        }
+        if (videoImage != nil) {
+            [formData appendPartWithFileData:videoImage name:VideoParamsImageName fileName:[NSString stringWithFormat:@"%@.jpg", VideoParamsImageName] mimeType:[NSString stringWithFormat:@"%@/jpg", VideoParamsImageName]];
+        }
     } error:nil];
     if (error) failure(error);
-    
-    // 开始上传图片
+    // 初始化HUD
+    ZGDHUD *HUDView = [[ZGDHUD alloc] init];
+    [HUDView showLoadingHUDAtView:nil];
+    // 开始上传
     [[[AFHttpClient sharedClient] uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {
         // 返回到主线程
         dispatch_async(dispatch_get_main_queue(), ^{
-            // 图片上传进度
+            // 上传进度
             progress(uploadProgress.fractionCompleted);
         });
         
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
         if (error) {
             failure(error);
+            ZGDHUD *failHUD = [[ZGDHUD alloc] init];
+            [failHUD showFailHUDAtView:hudView];
+            
+            // 重新加载
+            [failHUD setFailBlock:^{
+                __weak typeof(self) weakSelf= self;
+                [weakSelf postWithVideoPath:path params:params video:video videoImage:videoImage videoImageParamsName:VideoParamsImageName videoParamsName:VideoParamsName hudView:hudView success:success failure:failure progress:progress];
+                
+                //                [failHUD hide];
+            }];
+            //            NSLog(@"网络连接失败失败 错误码%zd", error.code);
+            [NSThread sleepForTimeInterval:2.0];
+            
+            
         }
         else {
             success(responseObject);
         }
     }] resume];
+    
 }
-
 
 #pragma mark -隐藏多余分割线
 
